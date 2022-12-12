@@ -24,6 +24,8 @@
  **********************************************************************/
 package de.bxservice.georeferencing.webui.form;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.Label;
@@ -38,6 +40,7 @@ import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
 import org.compiere.util.Msg;
 import org.zkoss.util.media.AMedia;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -153,7 +156,8 @@ public class WGeoreferencingMap extends GeoReferencing implements IFormControlle
 
 	private void refresh() {
 		setMap(BXS_Georeferencing_ID);
-		SessionManager.getAppDesktop().updateHelpTooltip(null,null,null,null);
+		if(SessionManager.getAppDesktop()!=null)
+			SessionManager.getAppDesktop().updateHelpTooltip(null,null,null,null);
 		repaintMap();
 	}
 	
@@ -206,6 +210,15 @@ public class WGeoreferencingMap extends GeoReferencing implements IFormControlle
 	
 	@Override
 	public ADForm getForm() {
+		//iDempiereConsulting __07/12/2022 ---- NON TOCCARE, serve per refresh della mappa nella form
+		if(Executions.getCurrent() != null)
+			((HttpServletRequest) Executions.getCurrent().getNativeRequest()).getServletContext().setAttribute(Env.getAD_User_ID(Env.getCtx())+"_geoRefWin", this);
+//			System.out.println(((HttpServletRequest) Executions.getCurrent().getNativeRequest()).getHeader("referer") );
+		
 		return mainForm;
+	}
+	
+	public Button getbtnRefresh() {
+		return bRefresh;
 	}
 }

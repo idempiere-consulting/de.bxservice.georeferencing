@@ -83,6 +83,11 @@ public class MBXSGeoreferencing extends X_BXS_Georeferencing {
 	            	marker.setTitle(rs.getString("markerTitle"));
 	            	marker.setDescription(rs.getString("markerDescription"));
 	            	marker.setColor(rs.getString("markerColor"));
+	            	//iDempiereConsulting __07/12/2022 ---- Gestione con table_id e record_id + indirizzo
+	            	marker.setAD_Table_ID(getAD_Table_ID());
+	            	marker.setRecord_ID(rs.getInt("recordID"));
+	            	marker.setAddress(rs.getString("address"));
+	            	/////
 	            	mapMarkers.add(marker);
 	            }
 	            
@@ -144,9 +149,11 @@ public class MBXSGeoreferencing extends X_BXS_Georeferencing {
 		TableInfo[] tableInfos = sqlParser.getTableInfo(0);
 		String keyTableAlias = !Util.isEmpty(tableInfos[0].getSynonym())
 				? tableInfos[0].getSynonym() : tableInfos[0].getTableName();
-
-		sql.append(getSelectClause());
-
+		
+		//iDempiereConsulting __07/12/2022 ---- Gestione con table_id e record_id
+		//sql.append(getSelectClause());
+		sql.append(getSelectClause(keyTableAlias, tableInfos[0].getTableName()));
+		
 		// build from clause
 		sql.append( " FROM ").append(getFromClause());
 
@@ -167,10 +174,16 @@ public class MBXSGeoreferencing extends X_BXS_Georeferencing {
 			sql.append(" ").append(getOtherClause());
 		}
 		
+		//iDempiereConsulting __07/12/2022 ---- Gestione con table_id e record_id
+		if(sql.toString().toUpperCase().contains("GROUP BY")) {
+			sql.insert(sql.indexOf("GROUP BY")+8, " recordID, ");
+		}
 		return sql.toString();
 	}
 	
-	private String getSelectClause() {
+	//iDempiereConsulting __07/12/2022 ---- Gestione con table_id e record_id
+	//private String getSelectClause() {
+	private String getSelectClause(String alias, String tableName) {
 		StringBuilder selectClause = new StringBuilder("SELECT DISTINCT ");
 		selectClause.append(getBXS_LatitudeSQL());
 		selectClause.append(" AS latitude, ");
@@ -188,6 +201,14 @@ public class MBXSGeoreferencing extends X_BXS_Georeferencing {
 		String colorSQL = Util.isEmpty(getBXS_ColorSQL()) ? "''": getBXS_ColorSQL();
 		selectClause.append(colorSQL);
 		selectClause.append(" AS markerColor ");
+		//iDempiereConsulting __07/12/2022 ---- Gestione con table_id e record_id + altri dati di selezione
+		if(tableName!=null && !tableName.isEmpty())
+			selectClause.append(", "+alias+"."+tableName+"_ID AS recordID");
+		
+		String otherSelect = get_ValueAsString("SelectClause");
+		if(!otherSelect.isEmpty()) 
+			selectClause.append(","+otherSelect);
+		//iDempiereConsulting __07/12/2022 --------END
 		
 		return selectClause.toString();
 	}
@@ -227,7 +248,7 @@ public class MBXSGeoreferencing extends X_BXS_Georeferencing {
 
 		// add DISTINCT clause
 		StringBuilder builder = new StringBuilder();
-		builder.append(getSelectClause());
+		builder.append(getSelectClause("",""));//iDempiereConsulting __07/12/2022
 
 		// build from clause
 		builder.append( " FROM ").append(getFromClause());

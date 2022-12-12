@@ -11,10 +11,16 @@ Require-Bundle: org.adempiere.plugin.utils,
  zcommon,
  zul
 Bundle-Activator: org.adempiere.plugin.utils.Incremental2PackActivator
-Import-Package: org.osgi.service.component.annotations;version="1.3.0";resolution:=optional
+Import-Package: javax.servlet;version="3.0.0",
+ javax.servlet.http;version="3.0.0",
+ javax.servlet.jsp,
+ javax.servlet.jsp.jstl.core,
+ javax.servlet.jsp.tagext,
+ org.osgi.service.component.annotations;version="1.3.0";resolution:=optional
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Export-Package: de.bxservice.georeferencing.model,
  de.bxservice.georeferencing.tools,
+ de.bxservice.georeferencing.webui.apps.form,
  de.bxservice.georeferencing.webui.form
 Service-Component: OSGI-INF/*.xml

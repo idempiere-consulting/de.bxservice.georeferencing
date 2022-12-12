@@ -31,6 +31,9 @@ public class MBXSMarker {
 	private String longitude;
 	private String title;
 	private String description;
+	private String address;
+	private int ad_table_id;
+	private int record_id;
 
 	public String getColor() {
 		return color;
@@ -71,4 +74,29 @@ public class MBXSMarker {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public int getAD_Table_ID() {
+		return ad_table_id;
+	}
+
+	public void setAD_Table_ID(int ad_table_id) {
+		this.ad_table_id = ad_table_id;
+	}
+
+	public int getRecord_ID() {
+		return record_id;
+	}
+
+	public void setRecord_ID(int record_id) {
+		this.record_id = record_id;
+	}
+	
 }

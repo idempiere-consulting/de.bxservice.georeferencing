@@ -70,12 +70,14 @@ public class MapboxHelper extends AbstractGeoreferencingHelper {
 			"  <style>" + 
 			"        body { margin:0; padding:0; }" + 
 			"        #map { position:absolute; top:0; bottom:0; width:100%; }" + 
-			"        .mapboxgl-popup {" + 
-			"            max-width: 200px;" + 
+			"        .mapboxgl-popup {" +
+			"            max-width: 300px;" + 
 			"        }" + 
 			"        .mapboxgl-popup-content {" + 
 			"            text-align: center;" + 
 			"            font-family: 'Open Sans', sans-serif;" + 
+			"            width: 260px;"+
+			"            height: 150px;"+
 			"        }" + 
 			"        .mapboxgl-marker {" + 
 			"          cursor: pointer;" + 
@@ -174,7 +176,7 @@ public class MapboxHelper extends AbstractGeoreferencingHelper {
 				"    new mapboxgl.Marker({color: marker.properties.mcolor})" + 
 				"        .setLngLat(marker.geometry.coordinates)" + 
 				"        .setPopup(new mapboxgl.Popup({offset: 25}) " + 
-				"        .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))" + 
+				"        .setHTML("+getHTML_ForMarker()+"))" + 
 				"        .addTo(map);" + 
 				"});" + 
 				"  </script>" + 
@@ -202,7 +204,7 @@ public class MapboxHelper extends AbstractGeoreferencingHelper {
 			featureSegment.append(getFeatureCode(getCoordinates(marker), 
 					getMarkerText(marker.getTitle()),
 					getMarkerText(marker.getDescription()),
-							color));
+							color, marker.getAD_Table_ID(), marker.getRecord_ID(), marker.getAddress()));//iDempiereConsulting __07/12/2022 ---- Gestione con table_id e record_id + indirizzo
 			featureSegment.append(",");
 		}
 
@@ -217,7 +219,8 @@ public class MapboxHelper extends AbstractGeoreferencingHelper {
 		return "[" + marker.getLongitude() + "," + marker.getLatitude() + "]";
 	}
 	
-	private String getFeatureCode(String coordinates, String title, String description, String color) {
+	//iDempiereConsulting __07/12/2022 ---- Gestione con table_id e record_id + indirizzo
+	private String getFeatureCode(String coordinates, String title, String description, String color, int adtableid, int recordid, String address) {
 		String featureCode = "{ " +
 				"type: \"Feature\", " +
 				"geometry: { " + 
@@ -227,10 +230,42 @@ public class MapboxHelper extends AbstractGeoreferencingHelper {
 				"properties: { " +
 				"title: \"" + title + "\", "+ 
 				"description: \"" + description + "\", "+
-				"mcolor: '" + color + "' "+
-				"} "+
+				"mcolor: '" + color + "' ,"+//iDempiereConsulting __07/12/2022 ----
+				//iDempiereConsulting __07/12/2022 ---- Gestione con table_id e record_id
+				"prop0: {\"tableid\": " +adtableid+",\"recordid\": "+recordid+",\"address\": \""+address+"\"}"+
+				"}"+
 				"}";
 
 		return featureCode;
+	}
+	
+	private String getHTML_ForMarker() {
+		String testHTML = "'<label>Title:  </label><blockquote contenteditable=\"true\">' + marker.properties.title + '</blockquote><p><label>Description:  </label>' + marker.properties.description + '</p>'";
+		
+		testHTML = "'<form action=\"/mapboxservice/MapboxServletPath\" method=\"post\"> "
+				+ "<table cellspacing=\"0\"> "
+				+ "  <tr> "
+				+ "    <td align=\"left\">Nome</td> "
+				+ "    <td align=\"left\"><input type=\"text\" style=\"border:none\" name=\"name\" value=\"' + marker.properties.title + '\" /></td> "
+				+ "  </tr> "
+				+ "  <tr> "
+				+ "    <td align=\"left\">Descrizione</td> "
+				+ "    <td align=\"left\"><input type=\"text\" style=\"border:none\" name=\"description\" value=\"' + marker.properties.description + '\" /></td> "
+				+ "  </tr> "//  
+				+ "  <tr> "
+				+ "    <td align=\"left\">Indirizzo</td> "
+				+ "    <td align=\"left\">' + marker.properties.prop0.address + '</td> "
+				+ "  </tr> "//  
+				+ "  <tr> "
+				+ "   <td></td> "
+				+ "   <td align=\"right\"><input type=\"submit\" value=\"register\"/></td> "
+				+ " </tr>"
+				+ "</table>"
+				+ "<input type=\"hidden\" name=\"tableid\" value='+marker.properties.prop0.tableid+'>"
+				+ "<input type=\"hidden\" name=\"recordid\" value='+marker.properties.prop0.recordid+'>"
+				+ "<input type=\"hidden\" name=\"adclientid\" value="+Env.getAD_Client_ID(Env.getCtx())+">"
+				+ "</form>'";
+		
+		return testHTML;
 	}
 }
