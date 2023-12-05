@@ -221,4 +221,13 @@ public class WGeoreferencingMap extends GeoReferencing implements IFormControlle
 	public Button getbtnRefresh() {
 		return bRefresh;
 	}
+	//iDempiereConsulting __04/12/2023 --- Refresh marker su mappa. Da mettere apposto.   TODO
+//	public void setRefreshForMarker() {
+//		try {
+//			this.onEvent(new Event(Events.ON_SELECT, new Listbox()));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+	//iDempiereConsulting __04/12/2023 ------END
 }

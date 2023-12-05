@@ -264,6 +264,7 @@ public class MapboxHelper extends AbstractGeoreferencingHelper {
 				+ "<input type=\"hidden\" name=\"tableid\" value='+marker.properties.prop0.tableid+'>"
 				+ "<input type=\"hidden\" name=\"recordid\" value='+marker.properties.prop0.recordid+'>"
 				+ "<input type=\"hidden\" name=\"adclientid\" value="+Env.getAD_Client_ID(Env.getCtx())+">"
+				+ "<input type=\"hidden\" name=\"aduserid\" value="+Env.getAD_User_ID(Env.getCtx())+">"
 				+ "</form>'";
 		
 		return testHTML;
