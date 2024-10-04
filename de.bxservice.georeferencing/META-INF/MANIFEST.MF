@@ -23,4 +23,5 @@ Export-Package: de.bxservice.georeferencing.model,
  de.bxservice.georeferencing.tools,
  de.bxservice.georeferencing.webui.apps.form,
  de.bxservice.georeferencing.webui.form
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Service-Component: OSGI-INF/*.xml
