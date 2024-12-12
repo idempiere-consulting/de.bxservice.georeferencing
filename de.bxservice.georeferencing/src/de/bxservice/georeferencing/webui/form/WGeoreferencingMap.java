@@ -157,7 +157,7 @@ public class WGeoreferencingMap extends GeoReferencing implements IFormControlle
 	private void refresh() {
 		setMap(BXS_Georeferencing_ID);
 		if(SessionManager.getAppDesktop()!=null)
-			SessionManager.getAppDesktop().updateHelpTooltip(null,null,null,null);
+			SessionManager.getAppDesktop().updateHelpTooltip(null,null,null,null,null);
 		repaintMap();
 	}
 	
@@ -205,7 +205,7 @@ public class WGeoreferencingMap extends GeoReferencing implements IFormControlle
 		markersMap.setContent(media);
 		if (getGeoConfiguration() != null)
 			SessionManager.getAppDesktop().updateHelpTooltip(getGeoConfiguration().get_Translation(MBXSGeoreferencing.COLUMNNAME_Description),
-					getGeoConfiguration().get_Translation(MBXSGeoreferencing.COLUMNNAME_Help),null,null);
+					getGeoConfiguration().get_Translation(MBXSGeoreferencing.COLUMNNAME_Help),null,null,null);
 	}
 	
 	@Override
