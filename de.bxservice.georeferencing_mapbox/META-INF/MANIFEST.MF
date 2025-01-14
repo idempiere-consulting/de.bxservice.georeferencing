@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Georeferencing_mapbox
 Bundle-SymbolicName: de.bxservice.georeferencing_mapbox;singleton:=true
-Bundle-Version: 11.0.0.qualifier
+Bundle-Version: 12.0.0.qualifier
 Automatic-Module-Name: de.bxservice.georeferencing_mapbox
 Bundle-Activator: org.adempiere.plugin.utils.Incremental2PackActivator
 Require-Bundle: org.adempiere.base,
